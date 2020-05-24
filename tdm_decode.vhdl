@@ -24,7 +24,8 @@ port (
   cout13:   out std_logic_vector( 15 downto 0); 
   cout14:   out std_logic_vector( 15 downto 0); 
   cout15:   out std_logic_vector( 15 downto 0); 
-  cout16:   out std_logic_vector( 15 downto 0)
+  cout16:   out std_logic_vector( 15 downto 0);
+  valid:   out std_logic_vector( 15 downto 0)
 );
 end entity;
 
@@ -46,6 +47,7 @@ architecture behaviour of tdm_decoder is
   signal out14:  signed( 15 downto 0) := (others => '0'); 
   signal out15:  signed( 15 downto 0) := (others => '0'); 
   signal out16:  signed( 15 downto 0) := (others => '0'); 
+  signal valid_x:  signed( 15 downto 0) := (others => '0'); 
 begin
   process (clk, n_rst, wclk)
   begin
@@ -59,6 +61,9 @@ begin
         cnt <= cnt + 1;
       end if;   
     
+      valid_x <= (others => '0'); 
+      valid_x( to_integer((cnt-16) / 16) ) <= '1';
+
       if cnt < 16 then
         out1( to_integer(15 - cnt) ) <= din;
       elsif cnt < 32 then
@@ -112,4 +117,5 @@ begin
   cout14 <= std_logic_vector(out14);
   cout15 <= std_logic_vector(out15);
   cout16 <= std_logic_vector(out16);
+  valid <= std_logic_vector(valid_x);
 end architecture;

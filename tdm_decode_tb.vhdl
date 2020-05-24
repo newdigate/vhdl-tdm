@@ -7,7 +7,7 @@ end entity;
 
 architecture testbench of counter_tb is
   signal  clk:    std_logic := '0';
-  signal  din:    std_logic := '1';
+  signal  din:    std_logic := '0';
   signal  wclk:   std_logic := '0';
   signal  n_rst:  std_logic := '0';
 
@@ -28,8 +28,9 @@ architecture testbench of counter_tb is
   signal  cout15:   std_logic_vector (15 downto 0) := (others => '0');
   signal  cout16:   std_logic_vector (15 downto 0) := (others => '0');
 
+  signal  valid:   std_logic_vector (15 downto 0) := (others => '0');
 begin
-  dut: entity work.tdm_decoder port map (clk, din, wclk, n_rst, cout1, cout2, cout3, cout4,cout5,cout6,cout7,cout8,cout9,cout10,cout11,cout12,cout13,cout14,cout15,cout16);
+  dut: entity work.tdm_decoder port map (clk, din, wclk, n_rst, cout1, cout2, cout3, cout4,cout5,cout6,cout7,cout8,cout9,cout10,cout11,cout12,cout13,cout14,cout15,cout16, valid);
 
   process
   begin
@@ -44,6 +45,16 @@ begin
     n_rst <= '0';
     wait for 10 ns;
     n_rst <= '1';
-    wait for 250 ns;
+    wait for 5000 ns;
+  end process;
+
+
+  process
+  begin
+    wclk <= '0';
+    wait for 10 ns;
+    wclk <= '1';
+    din <= not din;
+    wait for 2500 ns;
   end process;
 end;

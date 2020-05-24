@@ -29,9 +29,12 @@ architecture testbench of counter_tb is
   signal  cout16:   std_logic_vector (15 downto 0) := (others => '0');
 
   signal  valid:   std_logic_vector (15 downto 0) := (others => '0');
+  signal  reencoded:   std_logic := '0';
+  
 begin
   dut: entity work.tdm_decoder port map (clk, din, wclk, n_rst, cout1, cout2, cout3, cout4,cout5,cout6,cout7,cout8,cout9,cout10,cout11,cout12,cout13,cout14,cout15,cout16, valid);
-
+  dup: entity work.tdm_encoder port map (clk, wclk, n_rst, cout1, cout2, cout3, cout4, cout5, cout6, cout7, cout8, cout9, cout10, cout11, cout12, cout13, cout14, cout15, cout16, valid, reencoded);
+  
   process
   begin
     clk <= '0';

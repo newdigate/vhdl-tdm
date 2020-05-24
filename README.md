@@ -9,4 +9,4 @@ ghdl -r counter_tb --stop-time=3250ns --vcd=wave.vcd
 ```
 
 # view VCD output file in GTKWave
-[GTKWave](images/testbench-tdm-decode.png)
+![GTKWave](images/testbench-tdm-decode.png)

@@ -49,54 +49,55 @@ architecture behaviour of tdm_decoder is
   signal out16:  signed( 15 downto 0) := (others => '0'); 
   signal valid_x:  signed( 15 downto 0) := (others => '0'); 
 begin
-  process (clk, n_rst, wclk)
+  
+  process (clk, wclk)
   begin
-    if n_rst = '0' then
-      cnt <= (others => '0');
-    else
-      
-      if falling_edge(wclk) then
-        cnt <= (others => '0');
-      elsif falling_edge(clk) then
-        cnt <= cnt + 1;
-      end if;   
+    if n_rst = '1' then
     
-      valid_x <= (others => '0'); 
-      valid_x( to_integer((cnt-16) / 16) ) <= '1';
+      if falling_edge(clk) then
+      
+        if rising_edge(wclk) then
+          cnt <= (others => '0');
+        else
+          cnt <= cnt + 1;
+        end if;
+              
+        valid_x <= (others => '0'); 
+        valid_x( to_integer((cnt-16) / 16) ) <= '1';
 
-      if cnt < 16 then
-        out1( to_integer(15 - cnt) ) <= din;
-      elsif cnt < 32 then
-        out2( to_integer(15 - (cnt mod 16)) ) <= din;
-      elsif cnt < 48 then
-        out3( to_integer(15 - (cnt mod 16)) ) <= din;
-      elsif cnt < 64 then
-        out4( to_integer(15 - (cnt mod 16)) ) <= din;
-      elsif cnt < 80 then
-        out5( to_integer(15 - (cnt mod 16)) ) <= din;
-      elsif cnt < 96 then
-        out6( to_integer(15 - (cnt mod 16)) ) <= din;
-      elsif cnt < 112 then
-        out7( to_integer(15 - (cnt mod 16)) ) <= din;
-      elsif cnt < 128 then
-        out8( to_integer(15 - (cnt mod 16)) ) <= din;
-      elsif cnt < 144 then
-        out9( to_integer(15 - (cnt mod 16)) ) <= din;
-      elsif cnt < 160 then
-        out10( to_integer(15 - (cnt mod 16)) ) <= din;
-      elsif cnt < 176 then
-        out11( to_integer(15 - (cnt mod 16)) ) <= din;
-      elsif cnt < 192 then
-        out12( to_integer(15 - (cnt mod 16)) ) <= din;
-      elsif cnt < 208 then
-        out13( to_integer(15 - (cnt mod 16)) ) <= din;
-      elsif cnt < 224 then
-        out14( to_integer(15 - (cnt mod 16)) ) <= din;
-      elsif cnt < 240 then
-        out15( to_integer(15 - (cnt mod 16)) ) <= din;
-      else
-        out16( to_integer(15 - (cnt mod 16)) ) <= din;
-
+        if cnt < 16 then
+          out1( to_integer(15 - cnt) ) <= din;
+        elsif cnt < 32 then
+          out2( to_integer(15 - (cnt mod 16)) ) <= din;
+        elsif cnt < 48 then
+          out3( to_integer(15 - (cnt mod 16)) ) <= din;
+        elsif cnt < 64 then
+          out4( to_integer(15 - (cnt mod 16)) ) <= din;
+        elsif cnt < 80 then
+          out5( to_integer(15 - (cnt mod 16)) ) <= din;
+        elsif cnt < 96 then
+          out6( to_integer(15 - (cnt mod 16)) ) <= din;
+        elsif cnt < 112 then
+          out7( to_integer(15 - (cnt mod 16)) ) <= din;
+        elsif cnt < 128 then
+          out8( to_integer(15 - (cnt mod 16)) ) <= din;
+        elsif cnt < 144 then
+          out9( to_integer(15 - (cnt mod 16)) ) <= din;
+        elsif cnt < 160 then
+          out10( to_integer(15 - (cnt mod 16)) ) <= din;
+        elsif cnt < 176 then
+          out11( to_integer(15 - (cnt mod 16)) ) <= din;
+        elsif cnt < 192 then
+          out12( to_integer(15 - (cnt mod 16)) ) <= din;
+        elsif cnt < 208 then
+          out13( to_integer(15 - (cnt mod 16)) ) <= din;
+        elsif cnt < 224 then
+          out14( to_integer(15 - (cnt mod 16)) ) <= din;
+        elsif cnt < 240 then
+          out15( to_integer(15 - (cnt mod 16)) ) <= din;
+        else
+          out16( to_integer(15 - (cnt mod 16)) ) <= din;
+        end if;   
       end if;
     end if;
   end process;

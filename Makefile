@@ -19,21 +19,26 @@ PROJ = top
 PIN_DEF = tinyfpga/pins.pcf
 DEVICE = lp8k
 
-all: $(PROJ).asc
+all: $(PROJ).bin
 
 files := $(shell find . -name \*.vhdl)
 
 .PHONY: ${files}
 ${files}: ; ghdl -a $@
 
-%.json: .PHONY #$(PROJ).json
+%.vcd: .PHONY
+	ghdl -r $(PROJ) --stop-time=3250ns --vcd=$@
+
+%.json: $(PROJ).vcd
 	yosys -m ghdl -p 'ghdl  $(PROJ); synth_ice40 -top $(PROJ) -json $@'
 
 %.asc: %.json
 	nextpnr-ice40 --lp8k --package cm81 --pcf $(PIN_DEF) --asc $@ --json $^
 
+%.bin: %.asc
+	icepack $< $@
+
 clean:
-	rm -f $(PROJ).json $(PROJ).asc $(PROJ).rpt $(PROJ).bin *.cf
+	rm -f $(PROJ).json $(PROJ).asc $(PROJ).rpt $(PROJ).bin *.cf $(PROJ).vcd
 
 .SECONDARY:
-#.PHONY: all prog clean

@@ -55,7 +55,13 @@ begin
     if falling_edge(clk) then              
       valid_x <= (others => '0'); 
       valid_x( to_integer((cnt-16) / 16) ) <= '1';
-
+      
+      if wclk = '1' then
+        cnt <= (others => '0'); 
+      else
+        cnt <= cnt + 1;        
+      end if;
+      
       if cnt < 16 then
         out1( to_integer(15 - cnt) ) <= din;
       elsif cnt < 32 then
@@ -108,17 +114,6 @@ begin
     cout15 <= std_logic_vector(out15);
     cout16 <= std_logic_vector(out16);
     valid <= std_logic_vector(valid_x); 
-  end process;
-
-  process(clk, wclk)
-  begin
-    if falling_edge(clk) then
-      cnt <= cnt + 1;
-    end if;
-
-    if rising_edge(wclk) then
-      cnt <= (others => '0');  
-    end if;
   end process;
 
 end architecture;

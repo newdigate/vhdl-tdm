@@ -1,5 +1,6 @@
 # encode and decode tdm time-division-multiplex digital audio signals 
-decode and decode 16-ch/ 16 bits-per-sample TDM audio stream
+**this is a work in progress**
+* decode and decode 16-ch/ 16 bits-per-sample TDM audio stream
 
 * Using [ghdl](https://github.com/ghdl/ghdl) tool chain
 

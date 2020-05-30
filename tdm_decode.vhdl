@@ -50,73 +50,75 @@ architecture behaviour of tdm_decoder is
   signal valid_x:  signed( 15 downto 0) := (others => '0'); 
 begin
   
-  process (clk, wclk)
+  process (clk)
   begin
-    if n_rst = '1' then
-    
-      if falling_edge(clk) then
-      
-        if rising_edge(wclk) then
-          cnt <= (others => '0');
-        else
-          cnt <= cnt + 1;
-        end if;
-              
-        valid_x <= (others => '0'); 
-        valid_x( to_integer((cnt-16) / 16) ) <= '1';
+    if falling_edge(clk) then              
+      valid_x <= (others => '0'); 
+      valid_x( to_integer((cnt-16) / 16) ) <= '1';
 
-        if cnt < 16 then
-          out1( to_integer(15 - cnt) ) <= din;
-        elsif cnt < 32 then
-          out2( to_integer(15 - (cnt mod 16)) ) <= din;
-        elsif cnt < 48 then
-          out3( to_integer(15 - (cnt mod 16)) ) <= din;
-        elsif cnt < 64 then
-          out4( to_integer(15 - (cnt mod 16)) ) <= din;
-        elsif cnt < 80 then
-          out5( to_integer(15 - (cnt mod 16)) ) <= din;
-        elsif cnt < 96 then
-          out6( to_integer(15 - (cnt mod 16)) ) <= din;
-        elsif cnt < 112 then
-          out7( to_integer(15 - (cnt mod 16)) ) <= din;
-        elsif cnt < 128 then
-          out8( to_integer(15 - (cnt mod 16)) ) <= din;
-        elsif cnt < 144 then
-          out9( to_integer(15 - (cnt mod 16)) ) <= din;
-        elsif cnt < 160 then
-          out10( to_integer(15 - (cnt mod 16)) ) <= din;
-        elsif cnt < 176 then
-          out11( to_integer(15 - (cnt mod 16)) ) <= din;
-        elsif cnt < 192 then
-          out12( to_integer(15 - (cnt mod 16)) ) <= din;
-        elsif cnt < 208 then
-          out13( to_integer(15 - (cnt mod 16)) ) <= din;
-        elsif cnt < 224 then
-          out14( to_integer(15 - (cnt mod 16)) ) <= din;
-        elsif cnt < 240 then
-          out15( to_integer(15 - (cnt mod 16)) ) <= din;
-        else
-          out16( to_integer(15 - (cnt mod 16)) ) <= din;
-        end if;   
-      end if;
+      if cnt < 16 then
+        out1( to_integer(15 - cnt) ) <= din;
+      elsif cnt < 32 then
+        out2( to_integer(15 - (cnt mod 16)) ) <= din;
+      elsif cnt < 48 then
+        out3( to_integer(15 - (cnt mod 16)) ) <= din;
+      elsif cnt < 64 then
+        out4( to_integer(15 - (cnt mod 16)) ) <= din;
+      elsif cnt < 80 then
+        out5( to_integer(15 - (cnt mod 16)) ) <= din;
+      elsif cnt < 96 then
+        out6( to_integer(15 - (cnt mod 16)) ) <= din;
+      elsif cnt < 112 then
+        out7( to_integer(15 - (cnt mod 16)) ) <= din;
+      elsif cnt < 128 then
+        out8( to_integer(15 - (cnt mod 16)) ) <= din;
+      elsif cnt < 144 then
+        out9( to_integer(15 - (cnt mod 16)) ) <= din;
+      elsif cnt < 160 then
+        out10( to_integer(15 - (cnt mod 16)) ) <= din;
+      elsif cnt < 176 then
+        out11( to_integer(15 - (cnt mod 16)) ) <= din;
+      elsif cnt < 192 then
+        out12( to_integer(15 - (cnt mod 16)) ) <= din;
+      elsif cnt < 208 then
+        out13( to_integer(15 - (cnt mod 16)) ) <= din;
+      elsif cnt < 224 then
+        out14( to_integer(15 - (cnt mod 16)) ) <= din;
+      elsif cnt < 240 then
+        out15( to_integer(15 - (cnt mod 16)) ) <= din;
+      else
+        out16( to_integer(15 - (cnt mod 16)) ) <= din;
+      end if;  
+    end if;
+
+    cout1 <= std_logic_vector(out1);
+    cout2 <= std_logic_vector(out2);
+    cout3 <= std_logic_vector(out3);
+    cout4 <= std_logic_vector(out4);
+    cout5 <= std_logic_vector(out5);
+    cout6 <= std_logic_vector(out6);
+    cout7 <= std_logic_vector(out7);
+    cout8 <= std_logic_vector(out8);
+    cout9 <= std_logic_vector(out9);
+    cout10 <= std_logic_vector(out10);
+    cout11 <= std_logic_vector(out11);
+    cout12 <= std_logic_vector(out12);
+    cout13 <= std_logic_vector(out13);
+    cout14 <= std_logic_vector(out14);
+    cout15 <= std_logic_vector(out15);
+    cout16 <= std_logic_vector(out16);
+    valid <= std_logic_vector(valid_x); 
+  end process;
+
+  process(clk, wclk)
+  begin
+    if falling_edge(clk) then
+      cnt <= cnt + 1;
+    end if;
+
+    if rising_edge(wclk) then
+      cnt <= (others => '0');  
     end if;
   end process;
 
-  cout1 <= std_logic_vector(out1);
-  cout2 <= std_logic_vector(out2);
-  cout3 <= std_logic_vector(out3);
-  cout4 <= std_logic_vector(out4);
-  cout5 <= std_logic_vector(out5);
-  cout6 <= std_logic_vector(out6);
-  cout7 <= std_logic_vector(out7);
-  cout8 <= std_logic_vector(out8);
-  cout9 <= std_logic_vector(out9);
-  cout10 <= std_logic_vector(out10);
-  cout11 <= std_logic_vector(out11);
-  cout12 <= std_logic_vector(out12);
-  cout13 <= std_logic_vector(out13);
-  cout14 <= std_logic_vector(out14);
-  cout15 <= std_logic_vector(out15);
-  cout16 <= std_logic_vector(out16);
-  valid <= std_logic_vector(valid_x);
 end architecture;

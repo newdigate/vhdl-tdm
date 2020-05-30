@@ -15,7 +15,7 @@
 #  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 PROJ = top
-
+TESTBENCH=tdm_tb
 PIN_DEF = tinyfpga/pins.pcf
 DEVICE = lp8k
 
@@ -27,7 +27,7 @@ files := $(shell find . -name \*.vhdl)
 ${files}: ; ghdl -a $@
 
 %.vcd: .PHONY
-	ghdl -r $(PROJ) --stop-time=3250ns --vcd=$@
+	ghdl -r $(TESTBENCH) --stop-time=3250ns --vcd=$@
 
 %.json: $(PROJ).vcd
 	yosys -m ghdl -p 'ghdl  $(PROJ); synth_ice40 -top $(PROJ) -json $@'

@@ -2,10 +2,10 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity counter_tb is
+entity tdm_tb is
 end entity;
 
-architecture testbench of counter_tb is
+architecture testbench of tdm_tb is
   signal  clk:    std_logic := '0';
   signal  din:    std_logic := '0';
   signal  wclk:   std_logic := '1';

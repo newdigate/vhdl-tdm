@@ -2,7 +2,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
  
-entity tdm_encoder is
+entity tdm_encoder is --writes tdm, reads signed values and is_valid bits
 port (
   clk:    in  std_logic;
   wclk:   in  std_logic;
@@ -60,7 +60,7 @@ begin
 
   process (clk) -- reset event
   begin
-    if rising_edge(clk) then
+    if falling_edge(clk) then
       if cnt = 255 then
         out1 <= in1( 15 );
       elsif cnt+1 < 16 then

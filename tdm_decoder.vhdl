@@ -2,7 +2,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
  
-entity tdm_decoder is
+entity tdm_decoder is --reads tdm, output signed channel values and is_valid bits
 port (
   clk:    in  std_logic;
   din:    in  std_logic;
@@ -56,12 +56,6 @@ begin
       valid_x <= (others => '0'); 
       valid_x( to_integer((cnt-16) / 16) ) <= '1';
       
-      if wclk = '1' then
-        cnt <= (others => '0'); 
-      else
-        cnt <= cnt + 1;        
-      end if;
-      
       if cnt < 16 then
         out1( to_integer(15 - cnt) ) <= din;
       elsif cnt < 32 then
@@ -114,6 +108,17 @@ begin
     cout15 <= std_logic_vector(out15);
     cout16 <= std_logic_vector(out16);
     valid <= std_logic_vector(valid_x); 
+  end process;
+
+  process (clk)
+  begin
+    if rising_edge(clk) then
+      if wclk = '0' then
+        cnt <= (others => '0');
+      else
+        cnt <= cnt + 1; 
+      end if;    
+    end if;
   end process;
 
 end architecture;

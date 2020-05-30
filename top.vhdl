@@ -6,7 +6,8 @@ entity top IS
         PIN_1 : in std_logic; -- BCLK
         PIN_2 : in std_logic; -- DIN
         PIN_3 : in std_logic; -- WCLK
-        PIN_4 : in std_logic -- n_rst
+        PIN_4 : in std_logic; -- n_rst
+        PIN_5 : out std_logic -- DOUT
     );
 end entity;
 
@@ -29,7 +30,6 @@ architecture Behavioral of top IS
     signal  cout16:   std_logic_vector (15 downto 0) := (others => '0');
     signal  valid:    std_logic_vector( 15 downto 0) := (others => '0');
 begin
-    --enc: entity work.tdm_encoder port map (clk, wclk, n_rst, cin1, cin2, cin3, cin4, cin5, cin6, cin7, cin8, cin9, cin10, cin11, cin12, cin13, cin14, cin15, cin16, input_valid, din);
     dec: entity work.tdm_decoder port map (
         clk => PIN_1, 
         din => PIN_2, 
@@ -53,4 +53,27 @@ begin
         cout16 => cout16, 
         valid => valid);
 
+    enc: entity work.tdm_encoder port map (
+        clk => PIN_1, 
+        wclk => PIN_3, 
+        n_rst => PIN_4, 
+        cin1 => cout1, 
+        cin2 => cout2, 
+        cin3 => cout3, 
+        cin4 => cout4, 
+        cin5 => cout5, 
+        cin6 => cout6, 
+        cin7 => cout7, 
+        cin8 => cout8, 
+        cin9 => cout9, 
+        cin10 => cout10, 
+        cin11 => cout11, 
+        cin12 => cout12, 
+        cin13 => cout13, 
+        cin14 => cout14, 
+        cin15 => cout15, 
+        cin16 => cout16, 
+        valid => valid, 
+        dout => PIN_5);
+    
 end Behavioral;

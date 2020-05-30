@@ -27,7 +27,7 @@ files := $(shell find . -name \*.vhdl)
 ${files}: ; ghdl -a $@
 
 %.vcd: .PHONY
-	ghdl -r $(TESTBENCH) --stop-time=3250ns --vcd=$@
+	ghdl -r $(TESTBENCH) --stop-time=100000ns --vcd=$@
 
 %.json: $(PROJ).vcd
 	yosys -m ghdl -p 'ghdl  $(PROJ); synth_ice40 -top $(PROJ) -json $@'

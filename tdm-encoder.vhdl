@@ -60,126 +60,122 @@ begin
 
   process (clk, wclk) -- reset event
   begin
-    if n_rst /= '1' then
-      cnt <= (others => '0');
-      enabled <= '0';
-      second_word_clock_received <= '0';
-      first_word_clock_received <= '0';
-    end if;
-
-    if n_rst = '1' and rising_edge(wclk) and not (first_word_clock_received = '1') then
-      first_word_clock_received <= '1';
-    end if;
-
-    if n_rst = '1' and falling_edge(wclk) and not (second_word_clock_received = '1') then
-      second_word_clock_received <= '1';
-    end if;
-
-    if not (enabled = '1') and (first_word_clock_received = '1') and (second_word_clock_received = '1') then
-      enabled <= '1';
-    end if;
-
-    if falling_edge(clk) and n_rst = '1' and enabled = '1' then
-
-      if rising_edge(wclk) then
-        --cnt <= (others => '0');
+    if rising_edge(clk) then
+      if n_rst /= '1' then
         cnt <= (others => '0');
-        --out1 <= in1( 15 ); 
+        enabled <= '0';
+        second_word_clock_received <= '0';
+        first_word_clock_received <= '0';
+      elsif enabled = '1' then
+
+        if wclk = '1' then
+          --cnt <= (others => '0');
+          cnt <= (others => '0');
+          --out1 <= in1( 15 ); 
+        else
+          cnt <= cnt + 1;       
+        end if;
+
+        --bit_pos <= 15 - cnt mod 16;
+        if cnt = 255 then
+          out1 <= in1( 15 );
+        elsif cnt+1 < 16 then
+          out1 <= in1( to_integer(15 - ((cnt+1) mod 16)) );
+        elsif cnt+1 < 32 then
+          out1 <= in2( to_integer(15 - ((cnt+1) mod 16)) );     
+        elsif cnt+1 < 48 then
+          out1 <= in3( to_integer(15 - ((cnt+1) mod 16)) );   
+        elsif cnt+1 < 64 then
+          out1 <= in4( to_integer(15 - ((cnt+1) mod 16)) );
+        elsif cnt+1 < 80 then
+          out1 <= in5( to_integer(15 - ((cnt+1) mod 16)) ); 
+        elsif cnt+1 < 96 then
+          out1 <= in6( to_integer(15 - ((cnt+1) mod 16)) );
+        elsif cnt+1 < 112 then
+          out1 <= in7( to_integer(15 - ((cnt+1) mod 16)) );
+        elsif cnt+1 < 128 then
+          out1 <= in8( to_integer(15 - ((cnt+1) mod 16)) );
+        elsif cnt+1 < 144 then
+          out1 <= in9( to_integer(15 - ((cnt+1) mod 16)) );
+        elsif cnt+1 < 160 then
+          out1 <= in10( to_integer(15 - ((cnt+1) mod 16)) );
+        elsif cnt+1 < 176 then
+          out1 <= in11( to_integer(15 - ((cnt+1) mod 16)) );
+        elsif cnt+1 < 192 then
+          out1 <= in12( to_integer(15 - ((cnt+1) mod 16)) );
+        elsif cnt+1 < 208 then
+          out1 <= in13( to_integer(15 - ((cnt+1) mod 16)) );  
+        elsif cnt+1 < 224 then
+          out1 <= in14( to_integer(15 - ((cnt+1) mod 16)) );
+        elsif cnt+1 < 240 then
+          out1 <= in15( to_integer(15 - ((cnt+1) mod 16)) );  
+        else
+          out1 <= in16( to_integer(15 - ((cnt+1) mod 16)) );
+        end if;
+
+        if (valid_x(0) ='1') then
+          in1 <= signed(cin1);
+        end if; 
+        if (valid_x(1) ='1') then
+          in2 <= signed(cin2);
+        end if;
+        if (valid_x(2) ='1') then
+          in3 <= signed(cin3);        
+        end if;
+        if (valid_x(3) ='1') then
+          in4 <= signed(cin4);        
+        end if;
+        if (valid_x(4) ='1') then
+          in5 <= signed(cin5);        
+        end if;
+        if (valid_x(5) ='1') then
+          in6 <= signed(cin6);       
+        end if;
+        if (valid_x(6) ='1') then
+          in7 <= signed(cin7);    
+        end if;
+        if (valid_x(7) ='1') then
+          in8 <= signed(cin8);    
+        end if;
+        if (valid_x(8) ='1') then
+          in9 <= signed(cin9);    
+        end if;
+        if (valid_x(9) ='1') then
+          in10 <= signed(cin10);    
+        end if;
+        if (valid_x(10) ='1') then
+          in11 <= signed(cin11);    
+        end if;
+        if (valid_x(11) ='1') then
+          in12 <= signed(cin12);    
+        end if;
+        if (valid_x(12) ='1') then
+          in13 <= signed(cin13);    
+        end if;
+        if (valid_x(13) ='1') then
+          in14 <= signed(cin14);    
+        end if;
+        if (valid_x(14) ='1') then
+          in15 <= signed(cin15);    
+        end if;
+        if (valid_x(15) ='1') then
+          in16 <= signed(cin16);        
+        end if;
       else
-        cnt <= cnt + 1;       
-      end if;
 
+        if first_word_clock_received /= '1' then
+          first_word_clock_received <= '1';
+        end if;
 
-      
-      --bit_pos <= 15 - cnt mod 16;
-      if cnt = 255 then
-        out1 <= in1( 15 );
-      elsif cnt+1 < 16 then
-        out1 <= in1( to_integer(15 - ((cnt+1) mod 16)) );
-      elsif cnt+1 < 32 then
-        out1 <= in2( to_integer(15 - ((cnt+1) mod 16)) );     
-      elsif cnt+1 < 48 then
-        out1 <= in3( to_integer(15 - ((cnt+1) mod 16)) );   
-      elsif cnt+1 < 64 then
-        out1 <= in4( to_integer(15 - ((cnt+1) mod 16)) );
-      elsif cnt+1 < 80 then
-        out1 <= in5( to_integer(15 - ((cnt+1) mod 16)) ); 
-      elsif cnt+1 < 96 then
-        out1 <= in6( to_integer(15 - ((cnt+1) mod 16)) );
-      elsif cnt+1 < 112 then
-        out1 <= in7( to_integer(15 - ((cnt+1) mod 16)) );
-      elsif cnt+1 < 128 then
-        out1 <= in8( to_integer(15 - ((cnt+1) mod 16)) );
-      elsif cnt+1 < 144 then
-        out1 <= in9( to_integer(15 - ((cnt+1) mod 16)) );
-      elsif cnt+1 < 160 then
-        out1 <= in10( to_integer(15 - ((cnt+1) mod 16)) );
-      elsif cnt+1 < 176 then
-        out1 <= in11( to_integer(15 - ((cnt+1) mod 16)) );
-      elsif cnt+1 < 192 then
-        out1 <= in12( to_integer(15 - ((cnt+1) mod 16)) );
-      elsif cnt+1 < 208 then
-        out1 <= in13( to_integer(15 - ((cnt+1) mod 16)) );  
-      elsif cnt+1 < 224 then
-        out1 <= in14( to_integer(15 - ((cnt+1) mod 16)) );
-      elsif cnt+1 < 240 then
-        out1 <= in15( to_integer(15 - ((cnt+1) mod 16)) );  
-      else
-        out1 <= in16( to_integer(15 - ((cnt+1) mod 16)) );
-      end if;
+        if second_word_clock_received /= '1' then
+          second_word_clock_received <= '1';
+        end if;
 
-      if (valid_x(0) ='1') then
-        in1 <= signed(cin1);
-      end if; 
-      if (valid_x(1) ='1') then
-        in2 <= signed(cin2);
+        if enabled /= '1' and (first_word_clock_received = '1') and (second_word_clock_received = '1') then
+          enabled <= '1';
+        end if;
       end if;
-      if (valid_x(2) ='1') then
-        in3 <= signed(cin3);        
-      end if;
-      if (valid_x(3) ='1') then
-        in4 <= signed(cin4);        
-      end if;
-      if (valid_x(4) ='1') then
-        in5 <= signed(cin5);        
-      end if;
-      if (valid_x(5) ='1') then
-        in6 <= signed(cin6);       
-      end if;
-      if (valid_x(6) ='1') then
-        in7 <= signed(cin7);    
-      end if;
-      if (valid_x(7) ='1') then
-        in8 <= signed(cin8);    
-      end if;
-      if (valid_x(8) ='1') then
-        in9 <= signed(cin9);    
-      end if;
-      if (valid_x(9) ='1') then
-        in10 <= signed(cin10);    
-      end if;
-      if (valid_x(10) ='1') then
-        in11 <= signed(cin11);    
-      end if;
-      if (valid_x(11) ='1') then
-        in12 <= signed(cin12);    
-      end if;
-      if (valid_x(12) ='1') then
-        in13 <= signed(cin13);    
-      end if;
-      if (valid_x(13) ='1') then
-        in14 <= signed(cin14);    
-      end if;
-      if (valid_x(14) ='1') then
-        in15 <= signed(cin15);    
-      end if;
-      if (valid_x(15) ='1') then
-        in16 <= signed(cin16);        
-      end if;
-
     end if;
-
-
   end process;
 
   dout <= out1;
